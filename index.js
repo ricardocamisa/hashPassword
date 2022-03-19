@@ -1,8 +1,14 @@
 const express = require("express")
+const bodyParser = require('body-parser')
 const app = express();
 
 const bcrypt = require('bcryptjs')
 const helpers = {};
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 helpers.encriptarSenha = async(password)=>{
     const salt = await bcrypt.genSalt(10);
@@ -16,17 +22,19 @@ helpers.comparaSenha = async (password, senhaGuardada)=>{
 
 
 
-app.post("/encriptar/:senha", async (req, res)=>{
-    const {senha} = req.params;
+app.post("/encriptar", async (req, res)=>{
+
+    const {senha} = req.body;
+    console.log(senha)
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(senha, salt)
     res.send(hash)
 })
 
-app.post("/comparar/:senha/:senhaStore", async (req, res)=>{
-    const {senha, senhaStore} = req.params;
-    console.log(senha + senhaStore)
+app.post("/comparar", async (req, res)=>{
+    const {senha, senhaStore} = req.body
     const result = await bcrypt.compare(senha, senhaStore);
+    console.log(result)
     res.send(result);
 })
 
