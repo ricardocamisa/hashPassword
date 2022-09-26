@@ -22,7 +22,7 @@ helpers.comparaSenha = async (password, senhaGuardada) => {
 };
 
 app.get('/', (req, res) => {
-  res.sendFile(express.static(__dirname + '/public/index.html'));
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.post('/encriptar', async (req, res) => {
