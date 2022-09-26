@@ -27,16 +27,16 @@ app.get('/', (req, res) => {
 });
 
 app.post('/encriptar', async (req, res) => {
-  const { senha } = req.body;
-  console.log(senha);
+  const { password } = req.body;
+  console.log(password);
   const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(senha, salt);
+  const hash = await bcrypt.hash(password, salt);
   res.send(hash);
 });
 
 app.post('/comparar', async (req, res) => {
-  const { senha, senhaStore } = req.body;
-  const result = await bcrypt.compare(senha, senhaStore);
+  const { password, savedPassword } = req.body;
+  const result = await bcrypt.compare(password, savedPassword);
   console.log(result);
   res.send(result);
 });
