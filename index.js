@@ -41,6 +41,6 @@ app.post('/comparar', async (req, res) => {
   res.send(result);
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log('Servidor ligado');
 });
