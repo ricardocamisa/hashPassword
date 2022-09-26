@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hash-Me Using Excel VBA</title>
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200;300;400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0px;
+      padding: 0px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    h3 {
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .smart-button-container {
+      width: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container .title {
+      align-items: center;
+      justify-items: center;
+      justify-content: center;
+    }
+  </style>
+  <body>
+    <main>
+      <div class="container">
+        <div class="title">
+          <h1>Faça sua doação aqui</h1>
+          <div id="smart-button-container">
+            <div style="text-align: center">
+              <h3>Ricardo Camisa</h3>
+              <img
+                src="../public/assets/image/My Profile.png"
+                width="30"
+                height="30"
+                alt="Image"
+              />
+              <div id="paypal-button-container"></div>
+            </div>
+          </div>
+        </div>
+        <script
+          src="https://www.paypal.com/sdk/js?client-id=ASUxOgDpAiYkjLFVqlSQwj7EulRQpix9YtJjaHzAP7TLfNkThscYUL8_h_XGJ4aMo0j6i_arEtobqKpg&enable-funding=venmo&currency=USD"
+          data-sdk-integration-source="button-factory"
+        ></script>
+        <script>
+          function initPayPalButton() {
+            paypal
+              .Buttons({
+                style: {
+                  shape: 'rect',
+                  color: 'gold',
+                  layout: 'vertical',
+                  label: 'paypal',
+                },
+
+                createOrder: function (data, actions) {
+                  return actions.order.create({
+                    purchase_units: [
+                      { amount: { currency_code: 'USD', value: 1 } },
+                    ],
+                  });
+                },
+
+                onApprove: function (data, actions) {
+                  return actions.order.capture().then(function (orderData) {
+                    // Full available details
+                    console.log(
+                      'Capture result',
+                      orderData,
+                      JSON.stringify(orderData, null, 2)
+                    );
+
+                    // Show a success message within this page, e.g.
+                    const element = document.getElementById(
+                      'paypal-button-container'
+                    );
+                    element.innerHTML = '';
+                    element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                  });
+                },
+
+                onError: function (err) {
+                  console.log(err);
+                },
+              })
+              .render('#paypal-button-container');
+          }
+          initPayPalButton();
+        </script>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 
 const bcrypt = require('bcryptjs');
@@ -21,9 +22,7 @@ helpers.comparaSenha = async (password, senhaGuardada) => {
 };
 
 app.get('/', (req, res) => {
-  res.json({
-    message: 'Seja-bem vindo aos site de hash-VBA',
-  });
+  res.sendFile(express.static(__dirname + '/public/index.html'));
 });
 
 app.post('/encriptar', async (req, res) => {
